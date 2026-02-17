@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal App Feature Demo</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #0b1020; color: #e6ebff; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    h1 { margin: 0 0 8px; font-size: 1.7rem; }
+    p { color: #b8c2e6; }
+    .controls { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 16px 0; }
+    input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #2a3566; background: #121a33; color: #e6ebff; }
+    .stats { background: #121a33; border: 1px solid #2a3566; border-radius: 10px; padding: 12px; font-size: 0.95rem; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+    .tab { border: 1px solid #2a3566; background: #121a33; color: #b8c2e6; border-radius: 999px; padding: 8px 12px; cursor: pointer; }
+    .tab.active { background: #2b4cff; color: white; border-color: #2b4cff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 12px; }
+    .card { border: 1px solid #2a3566; border-radius: 12px; background: #121a33; padding: 12px; }
+    .num { font-size: 0.75rem; opacity: 0.7; }
+    .empty { margin-top: 16px; color: #ffb4b4; display: none; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Journal App — 200 Feature Ideas (Demo)</h1>
+    <p>Search, filter by category, and preview how your idea bank can be explored in a product planning UI.</p>
+
+    <div class="controls">
+      <input id="search" placeholder="Search feature... (e.g. mood, backup, streak)" />
+      <div class="stats" id="stats">Loading…</div>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+    <section class="grid" id="list"></section>
+    <div class="empty" id="empty">No matching ideas for this filter/search.</div>
+  </main>
+
+  <script>
+    const features = [
+      ["A","Daily writing streak with reward animation"],["A","Missed day? write 1 line quick mode"],["A","1 minute journal shortcut"],["A","Emergency vent button 😤"],["A","Secret hidden diary mode"],["A","Fake calculator unlock UI"],["A","Shake phone = new entry"],["A","Auto dark mode night me"],["A","Smart reminder based on usage"],["A","Write what you feel floating button"],["A","One tap gratitude entry"],["A","Lock screen widget shortcut"],["A","Weekly emotional report"],["A","Quick mood slider"],["A","3 word day summary"],["A","Today was template"],["A","Daily win logging"],["A","Daily mistake logging"],["A","Energy level tracker"],["A","Sleep log integration"],["A","Talk to your future self"],["A","Letter to past self"],["A","Random memory reminder"],["A","Flashback mode"],["A","On this day last year"],["A","Auto yearly book export"],["A","Smart journaling time suggestion"],["A","Entry difficulty level (short/medium/deep)"],["A","No typing voice mode"],["A","Distraction free 5 min timer"],["A","Calm background music"],["A","Emotional color theme"],["A","Rain sound writing mode"],["A","Focus lock (block back button)"],["A","Weekly reflection questions"],["A","Achievement unlock system"],["A","Writing milestone badges"],["A","Secret codes for entries"],["A","Personal quote generator"],["A","Writing speed tracker"],
+      ["B","CBT reflection template"],["B","Negative thought reframing"],["B","Why did I feel this guide"],["B","Trigger tracking"],["B","Confidence log"],["B","Fear tracking"],["B","Decision log"],["B","Life lessons section"],["B","Personal rules list"],["B","Values clarification"],["B","Life vision page"],["B","Role model journaling"],["B","Mentor advice simulation"],["B","Emotional triggers graph"],["B","Happiness score graph"],["B","Stress level trend"],["B","Gratitude percentage"],["B","Daily self rating"],["B","Weekly growth score"],["B","Self reflection checklist"],["B","Anger release writing"],["B","Forgiveness writing tool"],["B","Let go exercise"],["B","Regret analysis"],["B","Pride moments list"],["B","Identity journal"],["B","Habit reflection"],["B","Why I started reminder"],["B","Inner dialogue journal"],["B","Relationship reflection"],["B","Productivity reflection"],["B","Distraction log"],["B","Dopamine control log"],["B","Social media effect tracking"],["B","Mental clarity score"],["B","Focus hours tracking"],["B","Purpose exploration"],["B","Skill growth diary"],["B","Knowledge log"],["B","Idea capture vault"],
+      ["C","Auto local backup every 24h"],["C","Multiple backup versions"],["C","Backup compression"],["C","Encrypted backup"],["C","Password protected file"],["C","Import from another device"],["C","QR code transfer backup"],["C","Bluetooth transfer backup"],["C","File size optimization"],["C","Data integrity check"],["C","Duplicate entry detection"],["C","Data recovery tool"],["C","Undo delete system"],["C","Version history per entry"],["C","Entry edit timeline"],["C","Auto timestamp edits"],["C","Offline first PWA"],["C","Install as app"],["C","Cache system"],["C","Low storage warning"],["C","Storage usage dashboard"],["C","Export selected entries"],["C","Batch delete entries"],["C","Bulk tag system"],["C","Fast search index"],["C","Smart search suggestions"],["C","Filter by mood/date/tag"],["C","Dark mode auto switch"],["C","Light performance mode"],["C","Memory optimization"],["C","Crash safe save"],["C","Background auto save"],["C","File corruption recovery"],["C","JSON validation"],["C","Code minification"],["C","App size under 2MB"],["C","Offline font embed"],["C","Offline image storage"],["C","No internet dependency"],["C","Works in airplane mode"],
+      ["D","Offline diary sell as template"],["D","Custom diary UI sell"],["D","Premium themes pack"],["D","Paid encryption upgrade"],["D","AI plugin paid version"],["D","Students version"],["D","Couples diary version"],["D","Gym progress journal"],["D","Startup founder journal"],["D","Exam prep journal"],["D","Freelancer log journal"],["D","Business idea diary"],["D","Dream journal niche"],["D","Mental health journal"],["D","Kids diary version"],["D","Hindi language version"],["D","Hinglish UI"],["D","Multi-language pack"],["D","Custom branding version"],["D","White label sell"],["D","Chrome extension version"],["D","Android app version"],["D","iOS app version"],["D","Subscription model"],["D","One time purchase"],["D","Gift diary version"],["D","Personalized printed diary"],["D","Annual memory book"],["D","Corporate wellness package"],["D","College licensing"],["D","Coaching institute bundle"],["D","Therapy support tool"],["D","Life coach integration"],["D","Affiliate planner tools"],["D","Digital stationery store"],["D","Templates marketplace"],["D","Creator collaboration"],["D","Influencer journaling kit"],["D","Community challenges"],["D","Paid journaling course"],
+      ["E","Daily quote share"],["E","Instagram story export"],["E","Shareable growth graph"],["E","Streak badge share"],["E","My year in review share"],["E","Beautiful memory cards"],["E","Aesthetic export images"],["E","One line quote generator"],["E","Share gratitude list"],["E","Share monthly progress"],["E","Anonymous story share"],["E","Community board"],["E","Daily prompt challenge"],["E","30 day journaling challenge"],["E","Viral hashtag campaign"],["E","YouTube journaling vlog support"],["E","Student ambassador"],["E","College competition"],["E","Referral unlock themes"],["E","Invite friends reward"],["E","Couple shared diary"],["E","Group reflection room"],["E","Public writing challenge"],["E","Guest mode"],["E","Demo diary"],["E","Try without signup"],["E","Landing page SEO"],["E","Blog content"],["E","Mental health awareness posts"],["E","Creator partnership"],["E","Podcast integration"],["E","Email newsletter"],["E","Habit tracking share"],["E","Growth leaderboard"],["E","Public testimonial wall"],["E","Real user stories"],["E","Case studies"],["E","Before/after journaling impact"],["E","Productivity influencers"],["E","Self improvement community"]
+    ].map((f, i) => ({ id: i + 1, bucket: f[0], name: f[1] }));
+
+    const labels = { A: "A. Core Daily Journal", B: "B. Psychological & Growth", C: "C. Technical Smart", D: "D. Money & Product", E: "E. Viral & Growth" };
+    let active = "ALL";
+
+    const tabs = document.getElementById("tabs");
+    const list = document.getElementById("list");
+    const stats = document.getElementById("stats");
+    const search = document.getElementById("search");
+    const empty = document.getElementById("empty");
+
+    function drawTabs() {
+      const keys = ["ALL", ...Object.keys(labels)];
+      tabs.innerHTML = keys.map(k => `<button class="tab ${k===active?"active":""}" data-key="${k}">${k === "ALL" ? "All" : labels[k]}</button>`).join("");
+      tabs.querySelectorAll(".tab").forEach(btn => btn.onclick = () => { active = btn.dataset.key; render(); drawTabs(); });
+    }
+
+    function render() {
+      const q = search.value.trim().toLowerCase();
+      const shown = features.filter(x => (active === "ALL" || x.bucket === active) && (!q || x.name.toLowerCase().includes(q)));
+      stats.textContent = `${shown.length} shown / ${features.length} total`;
+      list.innerHTML = shown.map(x => `<article class="card"><div class="num">#${x.id} • ${labels[x.bucket]}</div><div>${x.name}</div></article>`).join("");
+      empty.style.display = shown.length ? "none" : "block";
+    }
+
+    search.addEventListener("input", render);
+    drawTabs();
+    render();
+  </script>
+</body>
+</html>
